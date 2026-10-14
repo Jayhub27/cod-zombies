@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZOMBIES 3D — three.js remake</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧟</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<canvas id="hud"></canvas>
+
+<div id="play-hint" class="hidden"></div>
+<div id="error-banner" class="hidden"></div>
+
+<div id="screen-title" class="screen">
+  <div class="menu-inner">
+    <div class="kicker">A CALL OF DUTY: ZOMBIES FAN REMAKE</div>
+    <h1 class="title">ZOMBIES</h1>
+    <div class="subtitle">3D · THREE.JS · BUNKER</div>
+    <div class="controls">
+      <div><b>WASD</b> move &nbsp;·&nbsp; <b>Shift</b> sprint &nbsp;·&nbsp; <b>RMB</b> aim down sights</div>
+      <div><b>LMB</b> shoot &nbsp;·&nbsp; <b>R</b> reload &nbsp;·&nbsp; <b>G</b> grenade &nbsp;·&nbsp; <b>V</b> knife</div>
+      <div><b>1 2 Q / wheel</b> swap weapon &nbsp;·&nbsp; <b>F</b> buy / interact (hold)</div>
+      <div><b>Mouse</b> look (click captures) &nbsp;·&nbsp; <b>Arrow keys</b> look (fallback)</div>
+      <div><b>Esc</b> pause &nbsp;·&nbsp; <b>M</b> mute &nbsp;·&nbsp; <b>F2</b> quality</div>
+    </div>
+    <div class="press" id="press-start" style="visibility:hidden">CLICK — OR PRESS <b>ENTER</b> — TO PLAY</div>
+    <div id="boot-status">BOOTING…</div>
+    <div class="hint">desktop only — needs keyboard + mouse · mouse look captures on click</div>
+    <div class="best" id="best-label">BEST ROUND: 0</div>
+    <div class="legal">fan tribute · not affiliated with Activision · sister build of the 2D version at <a href="../">/</a></div>
+  </div>
+</div>
+
+<div id="screen-pause" class="screen hidden">
+  <div class="menu-inner">
+    <h1 class="title small">PAUSED</h1>
+    <div class="pause-stats" id="pause-stats"></div>
+    <div class="controls">
+      <div><b>WASD</b> move &nbsp;·&nbsp; <b>Shift</b> sprint &nbsp;·&nbsp; <b>RMB</b> aim down sights</div>
+      <div><b>LMB</b> shoot &nbsp;·&nbsp; <b>R</b> reload &nbsp;·&nbsp; <b>G</b> grenade &nbsp;·&nbsp; <b>V</b> knife</div>
+      <div><b>1 2 Q / wheel</b> swap weapon &nbsp;·&nbsp; <b>F</b> buy / interact (hold)</div>
+      <div><b>Esc</b> pause &nbsp;·&nbsp; <b>M</b> mute &nbsp;·&nbsp; <b>F2</b> quality</div>
+    </div>
+    <div class="settings">
+      <label>MOUSE <input type="range" id="opt-sens" min="0.3" max="3" step="0.05"> <span id="val-sens"></span></label>
+      <label>FOV <input type="range" id="opt-fov" min="60" max="100" step="1"> <span id="val-fov"></span></label>
+      <label>SHAKE <input type="range" id="opt-shake" min="0" max="1.5" step="0.05"> <span id="val-shake"></span></label>
+    </div>
+    <div class="press">CLICK BEHIND THE PANEL — OR PRESS <b>ESC</b> — TO RESUME</div>
+  </div>
+</div>
+
+<div id="screen-over" class="screen hidden">
+  <div class="menu-inner">
+    <h1 class="title" id="over-title">YOU DIED</h1>
+    <div class="subtitle" id="over-stats"></div>
+    <div class="press">CLICK — OR PRESS <b>ENTER</b> — TO RESTART</div>
+  </div>
+</div>
+
+<script>
+  // Boot guard + visible error reporting. Runs before the module so any load/runtime
+  // failure is shown on the page instead of leaving a dead title screen.
+  (function () {
+    var banner = document.getElementById('error-banner');
+    var status = document.getElementById('boot-status');
+    var press = document.getElementById('press-start');
+    function show(msg) {
+      banner.classList.remove('hidden');
+      banner.textContent = String(msg).slice(0, 600);
+      status.classList.add('hidden');
+    }
+    window.__showBootError = show;
+    window.addEventListener('error', function (e) { show('⚠ ' + (e.message || 'script error') + (e.filename ? ' @ ' + e.filename.split('/').pop() : '')); }, true);
+    window.addEventListener('unhandledrejection', function (e) {
+      show('⚠ ' + ((e.reason && (e.reason.message || e.reason)) || 'unhandled rejection'));
+    });
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+      var hint = document.querySelector('.hint');
+      if (hint) hint.textContent = 'TOUCH DEVICE DETECTED — this 3D build needs a keyboard + mouse. Try the 2D build at /';
+    }
+    setTimeout(function () {
+      if (window.__zombiesBooted) {
+        status.classList.add('hidden');
+        press.style.visibility = 'visible';
+      } else {
+        show('⚠ game failed to start — WebGL2 may be unavailable. Try Chrome/Edge/Firefox with hardware acceleration on, or play the 2D build at /');
+      }
+    }, 5000);
+  })();
+</script>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js" } }
+</script>
+<script type="module" src="game3d.js"></script>
+</body>
+</html>

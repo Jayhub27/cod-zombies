@@ -1,0 +1,104 @@
+@import url("../style.css");
+
+#hud {
+  position: fixed;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* cursor: hidden only while the mouse is actually captured */
+body.playing { cursor: auto; }
+body.locked { cursor: none; }
+
+.hint {
+  margin-top: 10px;
+  color: #565b63;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+
+#boot-status {
+  margin-top: 14px;
+  color: #6f747c;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+  letter-spacing: .2em;
+}
+#boot-status.hidden { display: none; }
+
+#play-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%);
+  z-index: 12;
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: .14em;
+  font-size: 17px;
+  color: #f5c542;
+  background: rgba(10, 10, 12, .78);
+  border: 1px solid rgba(245, 197, 66, .4);
+  padding: 9px 20px;
+  border-radius: 999px;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+#play-hint span {
+  color: #9aa0a8;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+#play-hint.hidden { display: none; }
+
+#error-banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 100;
+  background: rgba(58, 8, 8, .96);
+  border: 1px solid #ef4444;
+  color: #ffd9d9;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+#error-banner.hidden { display: none; }
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin: 6px 0 20px;
+  color: #a7adb6;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+}
+.settings label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: .12em;
+}
+.settings input[type=range] { width: 190px; accent-color: #f5c542; }
+.settings span { min-width: 42px; color: #e8e2d5; text-align: right; }
+
+.pause-stats {
+  color: #8b8f96;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 12px;
+  letter-spacing: .14em;
+  margin-bottom: 18px;
+  white-space: pre-line;
+}
+
+#screen-title .legal a, #screen-pause .legal a { color: #6f747c; }

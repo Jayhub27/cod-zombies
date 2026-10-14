@@ -1,0 +1,147 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+canvas#game {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+body.playing { cursor: none; }
+
+/* vignette + scanline atmosphere */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0px, rgba(0,0,0,.10) 1px, transparent 1px, transparent 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);
+  mix-blend-mode: multiply;
+  opacity: .55;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 42%, rgba(28, 10, 8, .5), rgba(0, 0, 0, .88) 72%);
+}
+.screen.hidden { display: none; }
+
+.menu-inner {
+  text-align: center;
+  padding: 24px 40px;
+  max-width: 780px;
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: .45em;
+  color: #8a8f98;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-family: Impact, "Arial Black", "Franklin Gothic Bold", sans-serif;
+  font-size: clamp(64px, 13vw, 150px);
+  line-height: .95;
+  margin: 0 0 6px;
+  letter-spacing: .05em;
+  color: #cdc6ba;
+  text-shadow:
+    0 0 22px rgba(200, 40, 25, .55),
+    0 0 60px rgba(160, 20, 10, .35),
+    4px 4px 0 rgba(0,0,0,.9);
+  animation: flicker 5s infinite;
+}
+.title.small { font-size: clamp(44px, 8vw, 88px); }
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  71% { opacity: 1; }
+  72% { opacity: .72; }
+  73% { opacity: 1; }
+  85% { opacity: 1; }
+  86% { opacity: .85; }
+  87% { opacity: 1; }
+}
+
+.subtitle {
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: .3em;
+  color: #9c3c31;
+  font-size: 15px;
+  margin-bottom: 26px;
+}
+
+.controls {
+  display: inline-block;
+  text-align: left;
+  color: #a7adb6;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 14px;
+  line-height: 2;
+  padding: 14px 22px;
+  border: 1px solid rgba(120, 120, 130, .22);
+  border-radius: 8px;
+  background: rgba(10, 10, 12, .55);
+  margin-bottom: 24px;
+}
+.controls b { color: #e8e2d5; }
+
+.press {
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: .22em;
+  font-size: 18px;
+  color: #cdc6ba;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.press b { color: #ffd54f; }
+
+@keyframes pulse {
+  0%, 100% { opacity: .95; }
+  50% { opacity: .45; }
+}
+
+.best {
+  margin-top: 16px;
+  color: #6f747c;
+  font-family: "Consolas", "Menlo", monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+}
+
+.legal {
+  margin-top: 26px;
+  color: #4b4f56;
+  font-size: 11px;
+  letter-spacing: .1em;
+}
+
+#over-stats {
+  letter-spacing: .18em;
+  color: #b9b2a6;
+  font-size: 14px;
+  line-height: 2;
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+#screen-over .title { color: #a13a2e; text-shadow: 0 0 26px rgba(220, 40, 20, .6), 4px 4px 0 rgba(0,0,0,.9); }

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZOMBIES — a Call of Duty Zombies fan remake</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧟</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="screen-title" class="screen">
+  <div class="menu-inner">
+    <div class="kicker">A CALL OF DUTY: ZOMBIES FAN REMAKE</div>
+    <h1 class="title">ZOMBIES</h1>
+    <div class="subtitle">BUNKER · SURVIVE THE ROUNDS</div>
+    <div class="controls">
+      <div><b>WASD</b> move &nbsp;·&nbsp; <b>Shift</b> sprint &nbsp;·&nbsp; <b>Mouse</b> aim</div>
+      <div><b>LMB</b> shoot &nbsp;·&nbsp; <b>R</b> reload &nbsp;·&nbsp; <b>G</b> grenade</div>
+      <div><b>V / RMB</b> knife &nbsp;·&nbsp; <b>1 2 Q / wheel</b> swap weapon</div>
+      <div><b>F</b> buy / interact (hold) &nbsp;·&nbsp; <b>Esc</b> pause &nbsp;·&nbsp; <b>M</b> mute</div>
+    </div>
+    <div class="press">PRESS <b>ENTER</b> — OR CLICK — TO START</div>
+    <div class="best" id="best-label">BEST ROUND: 0</div>
+    <div class="legal">fan tribute · not affiliated with Activision · <a href="3d/" style="color:#8a8f98">play the 3D three.js build →</a></div>
+  </div>
+</div>
+
+<div id="screen-pause" class="screen hidden">
+  <div class="menu-inner">
+    <h1 class="title small">PAUSED</h1>
+    <div class="controls">
+      <div><b>WASD</b> move &nbsp;·&nbsp; <b>Shift</b> sprint &nbsp;·&nbsp; <b>Mouse</b> aim</div>
+      <div><b>LMB</b> shoot &nbsp;·&nbsp; <b>R</b> reload &nbsp;·&nbsp; <b>G</b> grenade</div>
+      <div><b>V / RMB</b> knife &nbsp;·&nbsp; <b>1 2 Q / wheel</b> swap weapon</div>
+      <div><b>F</b> buy / interact (hold) &nbsp;·&nbsp; <b>Esc</b> pause &nbsp;·&nbsp; <b>M</b> mute</div>
+    </div>
+    <div class="press">PRESS <b>ESC</b> TO RESUME</div>
+  </div>
+</div>
+
+<div id="screen-over" class="screen hidden">
+  <div class="menu-inner">
+    <h1 class="title" id="over-title">YOU DIED</h1>
+    <div class="subtitle" id="over-stats"></div>
+    <div class="press">PRESS <b>ENTER</b> — OR CLICK — TO RESTART</div>
+  </div>
+</div>
+
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
