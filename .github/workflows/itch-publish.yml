@@ -1,0 +1,58 @@
+name: Publish to itch.io
+
+# Every push to master builds the same zip layout as a manual itch upload and pushes it
+# to itch.io with butler. Runs as a no-op until the BUTLER_API_KEY repo secret is set.
+#
+# Setup (one time):
+#   1. Create the game on itch.io (Kind of project: HTML) — the URL slug becomes `game:` below.
+#   2. Install/run butler locally once:  butler login   (or grab a key from
+#      https://itch.io/user/settings/api-keys)
+#   3. Add the key to this repo:  Settings → Secrets and variables → Actions →
+#      New repository secret → name: BUTLER_API_KEY
+#   4. Change `user:` below to your itch.io username (if it is not jayhub27).
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  ITCH_USER: jayhub27
+  ITCH_GAME: cod-zombies
+  ITCH_CHANNEL: html
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    env:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the itch zip (index.html at root + 2d/3d builds)
+        run: zip -rq cod-zombies-itch.zip index.html style.css js 3d -x '*/node_modules/*'
+
+      - name: Install butler
+        if: env.BUTLER_API_KEY != ''
+        run: |
+          curl -sL -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/butler.zip
+          unzip -q butler.zip
+          chmod +x butler
+          ./butler -V
+
+      - name: Push build to itch.io
+        if: env.BUTLER_API_KEY != ''
+        run: |
+          ./butler push cod-zombies-itch.zip "$ITCH_USER/$ITCH_GAME:$ITCH_CHANNEL" \
+            --userversion "${{ github.run_number }}-${GITHUB_SHA::7}"
+          ./butler status "$ITCH_USER/$ITCH_GAME:$ITCH_CHANNEL"
+
+      - name: Note when the secret is missing
+        if: env.BUTLER_API_KEY == ''
+        run: echo "BUTLER_API_KEY secret not set — skipped the itch.io push (see the comments at the top of this workflow)."
+
+      - name: Upload zip artifact (always available)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cod-zombies-itch-zip
+          path: cod-zombies-itch.zip
